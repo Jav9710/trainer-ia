@@ -1,0 +1,276 @@
+═══════════════════════════════════════════════════════════════════════════════
+    RESUMEN DE CLASES - APLICACIÓN DE PREDICCIÓN DE CALORÍAS
+═══════════════════════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 1. ModelManager (src/models.py)                                            │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Funcionalidad: Carga y gestiona modelos de Machine Learning                │
+│                                                                              │
+│ Métodos principales:                                                        │
+│   • load_models() → Carga el modelo MLP desde disco                        │
+│   • get_model(model_name) → Obtiene un modelo por nombre                   │
+│   • get_available_models() → Lista de modelos disponibles                  │
+│   • get_model_details(model_name) → Detalles técnicos                      │
+│                                                                              │
+│ Argumentos:                                                                 │
+│   • model_name: Nombre del modelo (ej: "MLP Regressor")                    │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 2. FeaturePreparator (src/models.py)                                       │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Funcionalidad: Prepara datos del usuario para el modelo ML                 │
+│                                                                              │
+│ Métodos principales:                                                        │
+│   • encode_gender(gender) → Convierte género a número (M=1, F=0)           │
+│   • prepare_features(...) → Prepara todas las características              │
+│   • validate_features(features) → Valida características                   │
+│                                                                              │
+│ Argumentos:                                                                 │
+│   • sex: "Masculino" o "Femenino"                                           │
+│   • age: Edad en años                                                       │
+│   • height: Altura en cm                                                    │
+│   • weight: Peso en kg                                                      │
+│   • duration: Duración en minutos                                           │
+│   • heart_rate: Frecuencia cardíaca en ppm                                 │
+│   • body_temp: Temperatura corporal en °C                                  │
+│                                                                              │
+│ Retorna: DataFrame con 7 características preparadas                        │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 3. ModelPredictor (src/models.py)                                          │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Funcionalidad: Realiza predicciones con el modelo ML                       │
+│                                                                              │
+│ Métodos principales:                                                        │
+│   • predict(model, features) → Realiza predicción de calorías              │
+│                                                                              │
+│ Argumentos:                                                                 │
+│   • model: Modelo ML cargado                                                │
+│   • features: DataFrame con características preparadas                     │
+│                                                                              │
+│ Retorna: Calorías predichas (float)                                        │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 4. CalorieCalculator (src/calculations.py)                                 │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Funcionalidad: Calcula calorías con fórmulas (cuando no hay modelo)        │
+│                                                                              │
+│ Métodos principales:                                                        │
+│   • calculate_by_heart_rate(...) → Calcula por frecuencia cardíaca        │
+│   • calculate_by_met(...) → Calcula por MET                                │
+│   • adjust_by_temperature(...) → Ajusta por temperatura                    │
+│   • calculate_total(...) → Combina métodos y promedia                      │
+│                                                                              │
+│ Argumentos: Mismos que FeaturePreparator                                   │
+│ Retorna: Calorías calculadas (float)                                       │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 5. FoodEquivalentCalculator (src/calculations.py)                          │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Funcionalidad: Convierte calorías en equivalentes de comida                │
+│                                                                              │
+│ Métodos principales:                                                        │
+│   • calculate_equivalents(calories) → Calcula equivalentes                 │
+│   • get_top_equivalents(calories, n) → Top N equivalentes                  │
+│                                                                              │
+│ Argumentos:                                                                 │
+│   • calories: Calorías quemadas                                             │
+│   • n: Número de equivalentes a retornar                                   │
+│                                                                              │
+│ Retorna: Diccionario {alimento: cantidad}                                  │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 6. CaloriePredictionService (src/calculations.py)                          │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Funcionalidad: Servicio principal que coordina todo                        │
+│                                                                              │
+│ Métodos principales:                                                        │
+│   • predict_with_model(...) → Predice con modelo ML                        │
+│   • predict_with_formula(...) → Predice con fórmulas                       │
+│   • predict(...) → Intenta modelo, si falla usa fórmulas                   │
+│                                                                              │
+│ Argumentos: Datos del usuario (sex, age, height, weight, duration, etc.)   │
+│ Retorna: Tupla (calorías: float, método_usado: str)                        │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 7. ChartGenerator (src/utils.py)                                           │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Funcionalidad: Crea gráficos interactivos con Plotly                       │
+│                                                                              │
+│ Métodos principales:                                                        │
+│   • create_calorie_gauge(calories, max_calories) → Medidor                 │
+│   • create_comparison_chart(user_calories, label) → Comparación            │
+│   • create_food_equivalents_chart(equivalents) → Equivalentes              │
+│                                                                              │
+│ Argumentos:                                                                 │
+│   • calories: Calorías a mostrar                                            │
+│   • max_calories: Máximo del medidor                                       │
+│   • equivalents: Diccionario de equivalentes                               │
+│                                                                              │
+│ Retorna: Figura de Plotly                                                  │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 8. DataValidator (src/utils.py)                                            │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Funcionalidad: Valida datos de entrada del usuario                         │
+│                                                                              │
+│ Métodos principales:                                                        │
+│   • validate_user_data(...) → Valida todos los campos                      │
+│   • format_validation_errors(errors) → Formatea errores                    │
+│                                                                              │
+│ Argumentos: nombre, apellidos, edad, peso, estatura, duracion, etc.        │
+│ Retorna: Tupla (es_válido: bool, errores: list)                            │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 9. FormComponents (src/ui/components.py)                                   │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Funcionalidad: Componentes de formularios en Streamlit                     │
+│                                                                              │
+│ Métodos principales:                                                        │
+│   • render_personal_info_section() → Info personal                         │
+│   • render_exercise_info_section() → Info de ejercicio                     │
+│   • render_data_preview(data, model) → Vista previa                        │
+│                                                                              │
+│ Retorna: Diccionario con datos capturados del formulario                   │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 10. ResultComponents (src/ui/components.py)                                │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Funcionalidad: Muestra resultados de la predicción                         │
+│                                                                              │
+│ Métodos principales:                                                        │
+│   • render_main_result(calories, model_used) → Resultado principal         │
+│   • render_user_info(user_data) → Info del usuario                         │
+│   • render_exercise_info(user_data) → Info del ejercicio                   │
+│   • render_food_equivalents(equivalents) → Equivalentes                    │
+│   • render_action_buttons(...) → Botones de descarga                       │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 11. TrainingSession (src/services/training_session.py)                     │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Funcionalidad: Gestiona entrenamiento en tiempo real                       │
+│                                                                              │
+│ Constructor:                                                                │
+│   TrainingSession(user_data, target_duration_minutes, model_name,          │
+│                   ai_coach_api_key, language, enable_tts,                  │
+│                   tts_voice_gender, workout_profile)                       │
+│                                                                              │
+│ Métodos principales:                                                        │
+│   • start() → Inicia cronómetro                                             │
+│   • pause() → Pausa sesión                                                  │
+│   • resume() → Reanuda sesión                                               │
+│   • stop() → Detiene y hace predicción final                               │
+│   • update_metrics(...) → Actualiza métricas en tiempo real                │
+│   • get_current_state() → Estado actual                                    │
+│   • get_coach_message(type) → Mensaje del coach                            │
+│   • get_session_summary() → Resumen completo                               │
+│   • export_session_data() → Exporta datos                                  │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 12. AICoachService (src/services/ai_coach.py)                              │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Funcionalidad: Coach motivacional con IA                                   │
+│                                                                              │
+│ Constructor:                                                                │
+│   AICoachService(api_key, language)                                        │
+│                                                                              │
+│ Métodos principales:                                                        │
+│   • generate_motivation(...) → Mensaje motivacional                        │
+│   • generate_progress_update(...) → Actualización de progreso              │
+│   • generate_nutrition_tip(...) → Consejo nutricional                      │
+│   • generate_food_comparison(...) → Comparación con comida                 │
+│   • generate_encouragement(...) → Mensaje de ánimo                         │
+│   • generate_wellness_tip(...) → Consejo de bienestar                      │
+│                                                                              │
+│ Nota: Si no hay API key, usa mensajes predefinidos (fallback)              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 13. TimerService (src/services/timer_service.py)                           │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Funcionalidad: Cronómetro para el entrenamiento                            │
+│                                                                              │
+│ Métodos principales:                                                        │
+│   • start() → Inicia cronómetro                                             │
+│   • pause() → Pausa                                                         │
+│   • resume() → Reanuda                                                      │
+│   • stop() → Detiene                                                        │
+│   • reset() → Reinicia                                                      │
+│   • get_elapsed_seconds() → Segundos transcurridos                         │
+│   • get_elapsed_minutes() → Minutos transcurridos                          │
+│   • get_formatted_time() → Tiempo formateado (HH:MM:SS)                    │
+│   • get_progress_info(target_minutes) → Info de progreso                   │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 14. BiometricSensor (src/services/heart_rate_simulator.py)                 │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Funcionalidad: Simula sensores de FC y temperatura                         │
+│                                                                              │
+│ Métodos principales:                                                        │
+│   • calibrate(resting_hr, age, fitness_level) → Calibra sensor             │
+│   • read_heart_rate(elapsed_minutes) → Lee FC                              │
+│   • read_temperature(hr, elapsed, age, weight) → Lee temperatura           │
+│                                                                              │
+│ Argumentos:                                                                 │
+│   • resting_hr: FC en reposo                                                │
+│   • age: Edad del usuario                                                   │
+│   • fitness_level: "low", "medium", "high"                                  │
+│   • elapsed_minutes: Tiempo transcurrido                                   │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════════════════
+    FLUJO DE DATOS PRINCIPAL
+═══════════════════════════════════════════════════════════════════════════════
+
+PREDICCIÓN SIMPLE:
+─────────────────
+Usuario → FormComponents → DataValidator → FeaturePreparator → ModelPredictor
+                                                                      ↓
+       ChartGenerator ← ResultComponents ← CaloriePredictionService ←┘
+
+ENTRENAMIENTO EN VIVO:
+─────────────────────
+Usuario → TrainingSession → [TimerService + BiometricSensor]
+                                        ↓
+                           CaloriePredictionService (cada 30s)
+                                        ↓
+                              AICoachService (cada 30s)
+                                        ↓
+                                  TTSService (si activo)
+                                        ↓
+                               UI actualizada en tiempo real
+
+═══════════════════════════════════════════════════════════════════════════════
+    ARCHIVOS DE CONFIGURACIÓN
+═══════════════════════════════════════════════════════════════════════════════
+
+• src/config.py
+  ├─ APP_VERSION              → Versión de la app
+  ├─ APP_CONFIG               → Config de Streamlit
+  ├─ MODELS_DIR               → Ruta de modelos
+  ├─ INPUT_RANGES             → Rangos válidos de inputs
+  ├─ FOOD_EQUIVALENTS         → Calorías por alimento
+  ├─ FORMULA_CONSTANTS        → Constantes para cálculos
+  └─ TRAINING_CONFIG          → Config de entrenamiento
+
+• .env
+  └─ OPEN_ROUTER_API_KEY      → API key para el coach IA (opcional)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+Para documentación completa, consulta DOCUMENTACION_CLASES.md
+Para navegación rápida, consulta INDICE_RAPIDO.md
+Para estructura general, consulta README.md
