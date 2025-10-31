@@ -1,0 +1,108 @@
+# ==============================================================================
+# DOCKER COMPOSE - Entrenador Personal con Asistente IA
+# ==============================================================================
+# Configuración para despliegue fácil con Docker Compose
+# ==============================================================================
+
+version: '3.8'
+
+services:
+  # Aplicación principal
+  calorie-predictor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: calorie-predictor-app
+    image: calorie-predictor:latest
+
+    # Puertos
+    ports:
+      - "8501:8501"
+
+    # Variables de entorno
+    environment:
+      - PYTHONUNBUFFERED=1
+      # Descomenta y configura tu API key de OpenRouter
+      # - OPEN_ROUTER_API_KEY=${OPEN_ROUTER_API_KEY}
+
+    # Archivo de variables de entorno (opcional)
+    env_file:
+      - .env
+
+    # Volúmenes para persistencia
+    volumes:
+      # Modelos ML (para actualizar sin reconstruir imagen)
+      - ./models:/app/models:ro
+      # Logs (opcional)
+      - ./logs:/app/logs
+      # Cache TTS (opcional, para acelerar)
+      - tts_cache:/tmp/tts_cache_edge
+
+    # Reiniciar automáticamente en caso de fallo
+    restart: unless-stopped
+
+    # Limitar recursos (opcional)
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '1.0'
+          memory: 1G
+
+    # Health check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+    # Redes
+    networks:
+      - calorie-net
+
+    # Dependencias (si hubiera otros servicios)
+    # depends_on:
+    #   - database
+
+# Volúmenes nombrados para persistencia
+volumes:
+  tts_cache:
+    driver: local
+
+# Red personalizada
+networks:
+  calorie-net:
+    driver: bridge
+
+# ==============================================================================
+# COMANDOS ÚTILES
+# ==============================================================================
+#
+# Iniciar servicios:
+#   docker-compose up -d
+#
+# Ver logs:
+#   docker-compose logs -f
+#
+# Detener servicios:
+#   docker-compose down
+#
+# Reconstruir imagen:
+#   docker-compose build --no-cache
+#
+# Reiniciar servicio:
+#   docker-compose restart
+#
+# Ver estado:
+#   docker-compose ps
+#
+# Ejecutar comando en contenedor:
+#   docker-compose exec calorie-predictor bash
+#
+# Acceder a la aplicación:
+#   http://localhost:8501
+#
+# ==============================================================================

@@ -1,0 +1,114 @@
+# ==============================================================================
+# .dockerignore - Entrenador Personal con Asistente IA
+# ==============================================================================
+# Archivos y directorios que NO se copiarán a la imagen Docker
+# ==============================================================================
+
+# Control de versiones
+.git/
+.gitignore
+.gitattributes
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# Entornos virtuales
+venv/
+env/
+ENV/
+.venv
+virtualenv/
+
+# IDEs y editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# Logs y temporales
+*.log
+logs/
+tmp/
+temp/
+*.tmp
+
+# Cache de TTS
+/tmp/tts_cache_edge/
+
+# Variables de entorno locales (usar docker-compose o -e para pasarlas)
+.env.local
+.env.*.local
+
+# Documentación y archivos de desarrollo
+README.md
+LEEME_PRIMERO.md
+INICIO_RAPIDO.md
+DOCUMENTACION_CLASES.md
+INDICE_RAPIDO.md
+RESUMEN_CLASES.txt
+RESUMEN_ORGANIZACION.txt
+*.md
+docs/
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose.yml
+docker-compose.*.yml
+
+# Tests
+tests/
+test_*.py
+*_test.py
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# Archivos de sistema
+Thumbs.db
+desktop.ini
+
+# Datos grandes que no deben estar en la imagen
+data/
+datasets/
+*.csv
+*.xlsx
+*.db
+*.sqlite
+
+# Backups
+*.bak
+*.backup
+backup/
+
+# Node (si hay frontend)
+node_modules/
+package-lock.json
+yarn.lock
+
+# ==============================================================================
+# IMPORTANTE: Mantén .env si es necesario para valores por defecto
+# ==============================================================================
