@@ -1,0 +1,36 @@
+# ==============================================================================
+# REQUIREMENTS.TXT - Entrenador Personal con Asistente IA
+# ==============================================================================
+# Versiones actualizadas al 31 de octubre de 2025
+# Para instalar: pip install -r requirements.txt
+# ==============================================================================
+
+# Framework principal para aplicaciones web interactivas
+streamlit==1.51.0
+
+# Análisis y manipulación de datos
+pandas==2.3.3
+numpy==2.3.4
+
+# Visualización de datos interactiva
+plotly==6.3.1
+
+# Machine Learning
+scikit-learn==1.7.2
+
+# Utilidades
+python-dotenv==1.2.1  # Gestión de variables de entorno
+requests==2.32.5       # HTTP requests para API de OpenRouter
+joblib==1.5.2          # Serialización de modelos ML
+
+# Text-to-Speech y Audio
+edge-tts==7.2.3        # Microsoft Edge TTS (voces naturales)
+pygame==2.6.1          # Reproducción de audio
+
+# ==============================================================================
+# NOTAS DE COMPATIBILIDAD
+# ==============================================================================
+# - Python 3.8 o superior requerido
+# - NumPy 2.x compatible con Pandas 2.3+
+# - Todas las versiones son estables al 31/10/2025
+# ==============================================================================
