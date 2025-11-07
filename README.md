@@ -2,6 +2,30 @@
 
 Esta carpeta contiene toda la aplicación Python organizada de forma modular.
 
+## 🎥 Demos en Video
+
+**¡Mira la aplicación en acción!**
+
+### 🏃 Demo: Entrenamiento en Vivo
+
+Video demostrativo completo del módulo de **Entrenamiento en Tiempo Real** donde puedes ver:
+- ✨ Cronómetro en tiempo real con controles (iniciar, pausar, reanudar, detener)
+- 📊 Simulación realista de sensores biométricos (frecuencia cardíaca y temperatura)
+- 🤖 Coach de IA con mensajes motivacionales contextuales
+- 🔊 Text-to-Speech con voces naturales de Microsoft Edge
+- 📈 Predicción automática de calorías cada 30 segundos
+- 💪 Perfiles de entrenamiento personalizados (caminata, trote, carrera, HIIT, pirámide, resistencia)
+- 📉 Gráficos en tiempo real de métricas biométricas
+- 📋 Resumen final de la sesión con estadísticas completas
+
+**👉 [VER DEMO ENTRENAMIENTO EN VIVO](https://drive.google.com/file/d/1SYbCiE7Tsko65evXIKU1WKlGBO5IQpz6/view?usp=sharing)**
+
+### 📊 Demo: Predicción Simple de Calorías
+
+*Próximamente: Video demostrativo del módulo de predicción simple*
+
+---
+
 ## 📂 Estructura de la Aplicación
 
 ```
